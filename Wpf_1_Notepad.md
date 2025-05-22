@@ -82,7 +82,7 @@ private void Context_Action2_Click(object sender, RoutedEventArgs e)
     </TabItem>
 </TabControl>
 
-
+### XAML.CS
 
 using System;
 using System.IO;
@@ -179,39 +179,3 @@ namespace Wpf_1_Notepad
         }
     }
 }
-
-<Window x:Class="Wpf_1_Notepad.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Jegyzetfüzet" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <!-- Menü -->
-            <RowDefinition Height="Auto"/>
-            <!-- Gomb -->
-            <RowDefinition Height="*"/>
-            <!-- TabControl -->
-        </Grid.RowDefinitions>
-
-        <!-- Menü -->
-        <Menu VerticalAlignment="Top" Grid.Row="0">
-            <MenuItem Header="_Fájl">
-                <MenuItem Header="Megnyitás" Click="Menu_Open_Click"/>
-                <MenuItem Header="Mentés" Click="Menu_Save_Click"/>
-                <Separator/>
-                <MenuItem Header="Kilépés" Click="Menu_Exit_Click"/>
-            </MenuItem>
-        </Menu>
-
-        <!-- Jobb klikk gomb -->
-        <Button Content="Új Jegyzet" Width="150" Height="30" Margin="10" Grid.Row="1" Click="NewTabButton_Click"/>
-
-        <!-- TabControl -->
-        <TabControl Name="TabControl" Grid.Row="2" Margin="10">
-            <TabItem Header="Új Jegyzet">
-                <TextBox Name="TextBox1" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True"/>
-            </TabItem>
-        </TabControl>
-    </Grid>
-</Window>
