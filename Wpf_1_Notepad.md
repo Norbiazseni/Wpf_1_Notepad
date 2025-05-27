@@ -8,7 +8,7 @@ A példa tartalmaz egy **menüsort**, egy **jobb kattintással előhozható gyor
 
 ## 1. Főmenü (Menu + Access Keys)
 
-A **főmenü** egy klasszikus alkalmazásmenü, amely az **Új, Betöltés, Mentés, Kilépés ** lehetőségeket tartalmazza.
+A **főmenü** egy klasszikus alkalmazásmenü, amely az **Új, Betöltés, Mentés, Kilépés** lehetőségeket tartalmazza.
 Az **Access Key** (_Fájl) lehetővé teszi a gyorsbillentyűk használatát (**Alt + betű** kombinációval elérhetők).
 
 # XAML kódrészlet
