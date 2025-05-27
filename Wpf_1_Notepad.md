@@ -2,88 +2,84 @@
 
 Ez a dokumentáció bemutatja, hogyan lehet WPF-ben egy **főmenüt**, **gyorsmenüt** és **TabControlt** létrehozni egy **jegyzetfüzet alkalmazás** számára.
 
-A példa tartalmaz egy **menüsort**, egy **jobb kattintással megnyitható menüt**, valamint egy **több füles felületet** a jegyzetek kezeléséhez.
+A példa tartalmaz egy **menüsort**, egy **jobb kattintással előhozható gyorsmenüt**, valamint egy **több füles felületet** a jegyzetek kezeléséhez.
 
 ---
 
 ## 1. Főmenü (Menu + Access Keys)
 
-A főmenü egy klasszikus alkalmazásmenü, amely a **Fájl, Szerkesztés, Kilépés** lehetőségeket tartalmazza.
+A **főmenü** egy klasszikus alkalmazásmenü, amely az **Új, Betöltés, Mentés, Kilépés ** lehetőségeket tartalmazza.
+Az **Access Key** (_Fájl) lehetővé teszi a gyorsbillentyűk használatát (**Alt + betű** kombinációval elérhetők).
 
-Az **Access Keys** (_Fájl, _Szerkesztés) lehetővé teszik a gyorsbillentyűk használatát (**Alt + betű** kombinációval elérhetők).
+# XAML kódrészlet
 
-### XAML kód:
-
-```xml
-<Menu VerticalAlignment="Top">
-    <MenuItem Header="_Fájl">
-        <MenuItem Header="Megnyitás" Click="Menu_Open_Click"/>
-        <MenuItem Header="Mentés" Click="Menu_Save_Click"/>
+---xml
+<Menu VerticalAlignment="Top" Grid.Row="0">
+    <MenuItem Header="Fájl">
+        <MenuItem Header="Új" Click="NewFileButton_Click"/>
+        <MenuItem Header="Betöltés" Click="LoadButton_Click"/>
+        <MenuItem Header="Mentés" Click="SaveButton_Click"/>
         <Separator/>
-        <MenuItem Header="Kilépés" Click="Menu_Exit_Click"/>
+        <MenuItem Header="Kilépés" Click="ExitButton_Click"/>
     </MenuItem>
 </Menu>
+---
+## 2. TabControl
+            
+A **TabControl** lehetővé teszi, hogy egyszerre több jegyzetet nyissunk meg, mindegyik külön fülön.
 
-
-private void Menu_Open_Click(object sender, RoutedEventArgs e)
-{
-    OpenFileDialog openFileDialog = new OpenFileDialog();
-    if (openFileDialog.ShowDialog() == true)
-    {
-        string fileContent = File.ReadAllText(openFileDialog.FileName);
-        CreateNewTab(fileContent, Path.GetFileName(openFileDialog.FileName));
-    }
-}
-
-private void Menu_Save_Click(object sender, RoutedEventArgs e)
-{
-    if (TabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is TextBox textBox)
-    {
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        if (saveFileDialog.ShowDialog() == true)
-        {
-            File.WriteAllText(saveFileDialog.FileName, textBox.Text);
-        }
-    }
-}
-
-private void Menu_Exit_Click(object sender, RoutedEventArgs e)
-{
-    Application.Current.Shutdown();
-}
-
-
-
-<Button Content="Új Jegyzet" Width="150" Height="30" Margin="10" Grid.Row="1" Click="NewTabButton_Click">
-    <Button.ContextMenu>
-        <ContextMenu>
-            <MenuItem Header="Művelet 1" Click="Context_Action1_Click"/>
-            <MenuItem Header="Művelet 2" Click="Context_Action2_Click"/>
-        </ContextMenu>
-    </Button.ContextMenu>
-</Button>
-
-
-
-private void Context_Action1_Click(object sender, RoutedEventArgs e)
-{
-    MessageBox.Show("Művelet 1 aktiválva.");
-}
-
-private void Context_Action2_Click(object sender, RoutedEventArgs e)
-{
-    MessageBox.Show("Művelet 2 aktiválva.");
-}
-
-
-<TabControl Name="TabControl" Grid.Row="2" Margin="10">
-    <TabItem Header="Új Jegyzet">
-        <TextBox Name="TextBox1" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True"/>
+### XAML kód:
+```xml
+<TabControl x:Name="MyTabControl" Grid.Row="1">
+    <TabItem Header="Új jegyzet">
+        <TextBox x:Name="TextTextBox"
+                 Margin="10"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"/>
     </TabItem>
 </TabControl>
+```
+## 3. Főablak teljes XAML-je
 
-### XAML.CS
+```xml
+<Window x:Class="Wpf_1_Notepad.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:teszt"
+        mc:Ignorable="d"
+        Title="Jegyzettömb" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
+        <Menu VerticalAlignment="Top" Grid.Row="0">
+            <MenuItem Header="Fájl">
+                <MenuItem Header="Új" Click="NewFileButton_Click"/>
+                <MenuItem Header="Betöltés" Click="LoadButton_Click"/>
+                <MenuItem Header="Mentés" Click="SaveButton_Click"/>
+                <Separator/>
+                <MenuItem Header="Kilépés" Click="ExitButton_Click"/>
+            </MenuItem>
+        </Menu>
+        <TabControl x:Name="MyTabControl" Grid.Row="1">
+            <TabItem Header="Új jegyzet">
+                <TextBox x:Name="TextTextBox" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="auto" Height="350"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
+
+```
+
+
+## 4. C# Kód - MainWindow.xaml.cs
+```cs
 using System;
 using System.IO;
 using System.Windows;
@@ -92,6 +88,9 @@ using Microsoft.Win32;
 
 namespace Wpf_1_Notepad
 {
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -99,83 +98,95 @@ namespace Wpf_1_Notepad
             InitializeComponent();
         }
 
-        // "Új Jegyzet" gomb, új tab létrehozása
-        private void NewTabButton_Click(object sender, RoutedEventArgs e)
+        private void NewFileButton_Click(object sender, RoutedEventArgs e)
         {
             TabItem newTab = new TabItem
             {
-                Header = "Új Jegyzet"
+                Header = "Új jegyzet"
             };
 
-            TextBox newTextBox = new TextBox
+            TextBox textTextBox = new TextBox
             {
                 Margin = new Thickness(10),
+                Height = 350,
+                Width = 750,
                 AcceptsReturn = true,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
             };
 
-            newTab.Content = newTextBox;
+            newTab.Content = textTextBox;
 
-            TabControl.Items.Add(newTab);
-            TabControl.SelectedItem = newTab;
+            MyTabControl.Items.Add(newTab); // Hozzáadás a TabControl-hoz
+            MyTabControl.SelectedItem = newTab; // Aktívvá teszi az új tabot
         }
 
-        // "Megnyitás" gomb - fájl megnyitása
-        private void Menu_Open_Click(object sender, RoutedEventArgs e)
+
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            OpenFileDialog open = new OpenFileDialog
             {
-                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
             };
 
-            if (openFileDialog.ShowDialog() == true)
+            if (open.ShowDialog() == true)
             {
-                string filePath = openFileDialog.FileName;
+                string filePath = open.FileName;
                 string fileContent = File.ReadAllText(filePath);
+                string header = System.IO.Path.GetFileName(filePath);
 
                 TabItem newTab = new TabItem
                 {
-                    Header = Path.GetFileName(filePath)
+                    Header = header
                 };
 
-                TextBox newTextBox = new TextBox
+                TextBox textBox = new TextBox
                 {
-                    Text = fileContent,
                     Margin = new Thickness(10),
+                    Height = 350,
+                    Width = 750,
                     AcceptsReturn = true,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    Text = fileContent
                 };
 
-                newTab.Content = newTextBox;
-                TabControl.Items.Add(newTab);
-                TabControl.SelectedItem = newTab;
+                newTab.Content = textBox;
+
+                MyTabControl.Items.Add(newTab); 
+                MyTabControl.SelectedItem = newTab;
             }
         }
 
-        // "Mentés" gomb - fájl mentése
-        private void Menu_Save_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (TabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is TextBox textBox)
+            if (MyTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is TextBox textTextBox)
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
-                    Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+                    Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
                 };
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     string filePath = saveFileDialog.FileName;
-                    File.WriteAllText(filePath, textBox.Text);
+                    File.WriteAllText(filePath, textTextBox.Text);
+
+                    selectedTab.Header = System.IO.Path.GetFileName(filePath);
+
+                    MessageBox.Show("Sikeres mentés!", "Mentés", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+            }
+            else
+            {
+                MessageBox.Show("Nincs kiválasztva menthető jegyzet.", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        // "Kilépés" gomb - alkalmazás bezárása
-        private void Menu_Exit_Click(object sender, RoutedEventArgs e)
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }
+```
