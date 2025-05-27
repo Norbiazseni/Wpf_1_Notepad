@@ -13,7 +13,7 @@ Az **Access Key** (_Fájl) lehetővé teszi a gyorsbillentyűk használatát (**
 
 # XAML kódrészlet
 
----xml
+```xml
 <Menu VerticalAlignment="Top" Grid.Row="0">
     <MenuItem Header="Fájl">
         <MenuItem Header="Új" Click="NewFileButton_Click"/>
@@ -23,7 +23,8 @@ Az **Access Key** (_Fájl) lehetővé teszi a gyorsbillentyűk használatát (**
         <MenuItem Header="Kilépés" Click="ExitButton_Click"/>
     </MenuItem>
 </Menu>
----
+```
+
 ## 2. TabControl
             
 A **TabControl** lehetővé teszi, hogy egyszerre több jegyzetet nyissunk meg, mindegyik külön fülön.
