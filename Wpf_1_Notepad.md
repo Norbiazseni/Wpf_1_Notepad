@@ -44,7 +44,7 @@ A **TabControl** lehetővé teszi, hogy egyszerre több jegyzetet nyissunk meg, 
     </TabItem>
 </TabControl>
 ```
-## 3. Főablak teljes XAML-je
+<details><summary>## 3. Főablak teljes XAML-je</summary>
 
 ```xml
 <Window x:Class="Wpf_1_Notepad.MainWindow"
@@ -79,21 +79,21 @@ A **TabControl** lehetővé teszi, hogy egyszerre több jegyzetet nyissunk meg, 
 </Window>
 
 ```
-
+</details>
 
 ## 4. Magyarázat - MainWindow.xaml.cs
 
 A program 5 fő függvényt tartalmaz:
 
 * MainWindow(): Konstruktor, ami inicializálja az ablakot (pl. betölti a MainWindow.xaml fájlhoz tartozó vizuális elemeket).
-```cs
+```c#
 public MainWindow()
         {
             InitializeComponent();
         }
 ```
 * NewFileButton_Click(): Egy új lapot (TabItem) hoz létre „Új jegyzet” címmel, amibe egy TextBox kerül, amiben írhatunk. A lapot hozzáadja a MyTabControl-hoz, és automatikusan kiválasztásra kerül.
-  ```cs
+  ```c#
   private void NewFileButton_Click(object sender, RoutedEventArgs e)
         {
             TabItem newTab = new TabItem
@@ -118,7 +118,7 @@ public MainWindow()
         }
   ```
 * LoadButton_Click(): Megnyit egy fájlválasztó ablakot (OpenFileDialog), majd kiválaszthatunk a Filternek("Text files (*.txt)|*.txt|All files (*.*)|*.*") megfelelően egy fájlt, ami beolvasásra kerül. Ezt követően egy új lap jelenik meg, melynek a neve a fájl neve, tartalma pedig megegyezik a kiválasztott fájl tartalmával.
-```cs
+```c#
 private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog open = new OpenFileDialog
@@ -156,7 +156,7 @@ private void LoadButton_Click(object sender, RoutedEventArgs e)
         }
 ```
 * SaveButton_Click(): Megnyit egy mentési ablakot, melyben ki tudjuk választani, hogy az adott lapot hová mentsük. A lap tartalma, illetve neve mentésre kerül egy ".txt" fájlban. Sikeres mentésnél egy ablak jelenik meg, mely közli, hogy sikerült a mentés.
-```cs
+```c#
  private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (MyTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is TextBox textTextBox)
@@ -183,7 +183,7 @@ private void LoadButton_Click(object sender, RoutedEventArgs e)
         }
 ```
 * ExitButton_Click(): A "Kilépés" menüfűlre kattintva a program kilép. 
-```cs
+```c#
 private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
@@ -191,7 +191,8 @@ private void ExitButton_Click(object sender, RoutedEventArgs e)
 ```
 
 <details><summary>## 5. C# Kód - MainWindow.xaml.cs</summary>
-```cs
+    
+```c#
 using System;
 using System.IO;
 using System.Windows;
