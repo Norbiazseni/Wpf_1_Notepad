@@ -118,8 +118,8 @@ namespace Wpf_1_Notepad
 
             newTab.Content = textTextBox;
 
-            MyTabControl.Items.Add(newTab); // Hozzáadás a TabControl-hoz
-            MyTabControl.SelectedItem = newTab; // Aktívvá teszi az új tabot
+            MyTabControl.Items.Add(newTab); 
+            MyTabControl.SelectedItem = newTab; 
         }
 
 
