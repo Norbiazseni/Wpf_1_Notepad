@@ -189,9 +189,8 @@ private void ExitButton_Click(object sender, RoutedEventArgs e)
             System.Windows.Application.Current.Shutdown();
         }
 ```
-## 5. C# Kód - MainWindow.xaml.cs
 
-
+<details><summary>## 5. C# Kód - MainWindow.xaml.cs</summary>
 ```cs
 using System;
 using System.IO;
@@ -303,3 +302,4 @@ namespace Wpf_1_Notepad
     }
 }
 ```
+</details>
