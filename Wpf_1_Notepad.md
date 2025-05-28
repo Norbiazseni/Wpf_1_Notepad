@@ -44,8 +44,9 @@ A **TabControl** lehetővé teszi, hogy egyszerre több jegyzetet nyissunk meg, 
     </TabItem>
 </TabControl>
 ```
-<details><summary>## 3. Főablak teljes XAML-je</summary>
-
+## 3. Főablak teljes XAML-je
+<details><summary>MainWindow.xaml</summary>
+    
 ```xml
 <Window x:Class="Wpf_1_Notepad.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -190,7 +191,9 @@ private void ExitButton_Click(object sender, RoutedEventArgs e)
         }
 ```
 
-<details><summary>## 5. C# Kód - MainWindow.xaml.cs</summary>
+## 5. C# Kód - MainWindow.xaml.cs
+
+<details><summary></summary>
     
 ```c#
 using System;
