@@ -79,7 +79,117 @@ A **TabControl** lehetővé teszi, hogy egyszerre több jegyzetet nyissunk meg, 
 ```
 
 
-## 4. C# Kód - MainWindow.xaml.cs
+## 4. Magyarázat - MainWindow.xaml.cs
+
+A program 5 fő függvényt tartalmaz:
+
+* MainWindow(): Konstruktor, ami inicializálja az ablakot (pl. betölti a MainWindow.xaml fájlhoz tartozó vizuális elemeket).
+```cs
+public MainWindow()
+        {
+            InitializeComponent();
+        }
+```
+* NewFileButton_Click(): Egy új lapot (TabItem) hoz létre „Új jegyzet” címmel, amibe egy TextBox kerül, amiben írhatunk. A lapot hozzáadja a MyTabControl-hoz, és automatikusan kiválasztásra kerül.
+  ```cs
+  private void NewFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            TabItem newTab = new TabItem
+            {
+                Header = "Új jegyzet"
+            };
+
+            TextBox textTextBox = new TextBox
+            {
+                Margin = new Thickness(10),
+                Height = 350,
+                Width = 750,
+                AcceptsReturn = true,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            };
+
+            newTab.Content = textTextBox;
+
+            MyTabControl.Items.Add(newTab); 
+            MyTabControl.SelectedItem = newTab; 
+        }
+  ```
+* LoadButton_Click(): Megnyit egy fájlválasztó ablakot (OpenFileDialog), majd kiválaszthatunk a Filternek("Text files (*.txt)|*.txt|All files (*.*)|*.*") megfelelően egy fájlt, ami beolvasásra kerül. Ezt követően egy új lap jelenik meg, melynek a neve a fájl neve, tartalma pedig megegyezik a kiválasztott fájl tartalmával.
+```cs
+private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog
+            {
+                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+            };
+
+            if (open.ShowDialog() == true)
+            {
+                string filePath = open.FileName;
+                string fileContent = File.ReadAllText(filePath);
+                string header = System.IO.Path.GetFileName(filePath);
+
+                TabItem newTab = new TabItem
+                {
+                    Header = header
+                };
+
+                TextBox textBox = new TextBox
+                {
+                    Margin = new Thickness(10),
+                    Height = 350,
+                    Width = 750,
+                    AcceptsReturn = true,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    Text = fileContent
+                };
+
+                newTab.Content = textBox;
+
+                MyTabControl.Items.Add(newTab); 
+                MyTabControl.SelectedItem = newTab;
+            }
+        }
+```
+* SaveButton_Click(): Megnyit egy mentési ablakot, melyben ki tudjuk választani, hogy az adott lapot hová mentsük. A lap tartalma, illetve neve mentésre kerül egy ".txt" fájlban. Sikeres mentésnél egy ablak jelenik meg, mely közli, hogy sikerült a mentés.
+```cs
+ private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MyTabControl.SelectedItem is TabItem selectedTab && selectedTab.Content is TextBox textTextBox)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filePath = saveFileDialog.FileName;
+                    File.WriteAllText(filePath, textTextBox.Text);
+
+                    selectedTab.Header = System.IO.Path.GetFileName(filePath);
+
+                    MessageBox.Show("Sikeres mentés!", "Mentés", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nincs kiválasztva menthető jegyzet.", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+```
+* ExitButton_Click(): A "Kilépés" menüfűlre kattintva a program kilép. 
+```cs
+private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+```
+## 5. C# Kód - MainWindow.xaml.cs
+
+
 ```cs
 using System;
 using System.IO;
