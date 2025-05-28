@@ -1,5 +1,6 @@
 # WPF: Főmenü, Gyorsmenü és TabControl a Jegyzetfüzethez
-![notepad](https://github.com/user-attachments/assets/510f0f14-daa0-40cf-adb8-5eac718f1494)
+
+![image](https://github.com/user-attachments/assets/68b1678c-3648-4fe5-b77d-348fd4020d7d)
 
 Ez a dokumentáció bemutatja, hogyan lehet WPF-ben egy **főmenüt**, **gyorsmenüt** és **TabControlt** létrehozni egy **jegyzetfüzet alkalmazás** számára.
 
